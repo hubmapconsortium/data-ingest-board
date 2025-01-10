@@ -60,6 +60,7 @@ const UploadTable = ({ data, loading, filterUploads, uploadData, datasetData, ha
     const unfilteredOrganTypes = makeHierarchyFilters(filterField('intended_organ'))
     const uniqueOrganType = unfilteredOrganTypes.filter(name => name !== "" && name !== " ");
     const uniqueDatasetType = filterField('intended_dataset_type')
+    const uniqueSourceTypes = filterField('intended_source_type')
 
     let urlParamFilters = {};
 
@@ -143,6 +144,18 @@ const UploadTable = ({ data, loading, filterUploads, uploadData, datasetData, ha
                     <span>{getUBKGName(organType)}</span>
                 )
             }
+        },
+        {
+            title: TABLE.cols.n('intended_source_type', 'Intended Source Type'),
+            width: 220,
+            dataIndex: TABLE.cols.f('intended_source_type'),
+            align: "left",
+            defaultSortOrder: urlSortOrder[TABLE.cols.f('intended_source_type')] || null,
+            sorter: (a,b) => a[TABLE.cols.f('intended_source_type')]?.localeCompare(b[TABLE.cols.f('intended_source_type')]),
+            filteredValue: urlParamFilters[TABLE.cols.f('intended_source_type')] || null,
+            filters: uniqueSourceTypes.map(name => ({ text: name, value: name?.toLowerCase() })),
+            onFilter: (value, record) => eq(record[TABLE.cols.f('intended_source_type')], value),
+            ellipsis: true,
         },
         {
             title: "Intended Dataset Type",
